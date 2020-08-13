@@ -1,3 +1,10 @@
+<% if @car_category.errors.any? %>
+  <ul>
+    <% @car_category.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
 <%= form_with model: @car_category, local: true do |f| %>
   <%= f.label :name, 'Nome' %>
   <%= f.text_field :name %>
