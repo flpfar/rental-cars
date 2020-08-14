@@ -12,4 +12,5 @@
 </dl>
 
 <%= link_to  "Editar", edit_car_category_path(@car_category) %>
+<%= link_to  "Apagar", car_category_path(@car_category), method: :DELETE, data: {confirm: 'Apagar esta categoria?'} %>
 <%= link_to  "Voltar", car_categories_path %>
