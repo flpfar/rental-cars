@@ -32,6 +32,37 @@ feature 'Admin view car categories' do
     expect(page).not_to have_content('Flex')
   end
 
+  scenario 'and view car models available in details' do
+    car_category = CarCategory.create!(name: 'Top', daily_rate: 105.5, car_insurance: 58.5,
+                                       third_party_insurance: 10.5)
+    CarModel.create!(name: 'Ka', year: 2019, manufacturer: 'Ford', motorization: '1.0',
+                     car_category: car_category, fuel_type: 'Flex')
+    CarModel.create!(name: 'Onix', year: 2020, manufacturer: 'Chevrolet', motorization: '1.0',
+                     car_category: car_category, fuel_type: 'Flex')
+
+    visit root_path
+    click_on 'Categorias'
+    click_on 'Top'
+
+    expect(page).to have_content('Ford')
+    expect(page).to have_content('2019')
+    expect(page).to have_content('Onix')
+    expect(page).to have_content('2020')
+    expect(page).to have_content('1.0', count: 2)
+    expect(page).to have_content('1.0', count: 2)
+  end
+
+  scenario 'and view no car models available in details' do
+    CarCategory.create!(name: 'Top', daily_rate: 105.5, car_insurance: 58.5,
+                        third_party_insurance: 10.5)
+
+    visit root_path
+    click_on 'Categorias'
+    click_on 'Top'
+
+    expect(page).to have_content('Nenhum modelo de carro cadastrado nessa categoria')
+  end
+
   scenario 'and no car categories are created' do
     visit root_path
     click_on 'Categorias'

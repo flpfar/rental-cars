@@ -11,6 +11,30 @@
   <dd><%= number_to_currency @car_category.third_party_insurance %></dd>
 </dl>
 
+<h2>Modelos disponíveis</h2>
+<% if @car_category.car_models.empty? %>
+  <h3>Nenhum modelo de carro cadastrado nessa categoria</h3>
+<% else %>
+  <table>
+    <tr>
+      <th><%= CarModel.human_attribute_name :name %></th>
+      <th><%= CarModel.human_attribute_name :year %></th>
+      <th><%= CarModel.human_attribute_name :manufacturer %></th>
+      <th><%= CarModel.human_attribute_name :motorization %></th>
+      <th><%= CarModel.human_attribute_name :fuel_type %></th>
+    </tr>
+    <% @car_category.car_models.each do |model| %>
+      <tr>
+        <td><%= link_to model.name, model %></td>
+        <td><%= model.year %></td>
+        <td><%= model.manufacturer %></td>
+        <td><%= model.motorization %></td>
+        <td><%= model.fuel_type %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+<br />
 <%= link_to  "Editar", edit_car_category_path(@car_category) %>
 <%= link_to  "Apagar", car_category_path(@car_category), method: :DELETE, data: {confirm: 'Apagar esta categoria?'} %>
 <%= link_to  "Voltar", car_categories_path %>
