@@ -1,9 +1,19 @@
 require 'rails_helper'
 
 feature 'Admin edits subsidiary' do
+  scenario 'must be signed in' do
+    visit root_path
+    click_on 'Filiais'
+
+    expect(current_path).to eq new_user_session_path
+    expect(page).to have_content('Para continuar, faça login ou registre-se.')
+  end
+
   scenario 'successfully' do
     Subsidiary.create!(name: 'Porto Fareira', cnpj: '62.221.693/4752-03', address: 'Av das Americas, 212')
+    user = User.create!(name: 'Felipe', email: 'flp.far@hotmail.com', password: '12345678')
 
+    login_as(user, scope: :user)
     visit root_path
     click_on 'Filiais'
     click_on 'Porto Fareira'
@@ -23,7 +33,9 @@ feature 'Admin edits subsidiary' do
 
   scenario 'attributes cannot be blank' do
     Subsidiary.create!(name: 'Porto Fareira', cnpj: '62.221.693/4752-03', address: 'Av das Americas, 212')
+    user = User.create!(name: 'Felipe', email: 'flp.far@hotmail.com', password: '12345678')
 
+    login_as(user, scope: :user)
     visit root_path
     click_on 'Filiais'
     click_on 'Porto Fareira'
@@ -39,7 +51,9 @@ feature 'Admin edits subsidiary' do
   scenario 'and CNPJ must be unique' do
     Subsidiary.create!(name: 'Porto Fareira', cnpj: '62.221.693/4752-03', address: 'Av das Americas, 212')
     Subsidiary.create!(name: 'São Paulo', cnpj: '44.798.677/0001-92', address: 'Av Paulista, 234')
+    user = User.create!(name: 'Felipe', email: 'flp.far@hotmail.com', password: '12345678')
 
+    login_as(user, scope: :user)
     visit root_path
     click_on 'Filiais'
     click_on 'Porto Fareira'
@@ -52,7 +66,9 @@ feature 'Admin edits subsidiary' do
 
   scenario 'and CNPJ must be valid' do
     Subsidiary.create!(name: 'Porto Fareira', cnpj: '62.221.693/4752-03', address: 'Av das Americas, 212')
+    user = User.create!(name: 'Felipe', email: 'flp.far@hotmail.com', password: '12345678')
 
+    login_as(user, scope: :user)
     visit root_path
     click_on 'Filiais'
     click_on 'Porto Fareira'

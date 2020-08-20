@@ -1,10 +1,20 @@
 require 'rails_helper'
 
 feature 'Admin view subsidiaries' do
+  scenario 'must be signed in' do
+    visit root_path
+    click_on 'Filiais'
+
+    expect(current_path).to eq new_user_session_path
+    expect(page).to have_content('Para continuar, faça login ou registre-se.')
+  end
+
   scenario 'successfully' do
     Subsidiary.create!(name: 'Porto Ferreira', cnpj: '62.221.693/4752-03', address: 'Av das Americas, 212')
     Subsidiary.create!(name: 'São Paulo', cnpj: '28.919.059/5575-25', address: 'Av Paulista, 234')
+    user = User.create!(name: 'Felipe', email: 'flp.far@hotmail.com', password: '12345678')
 
+    login_as(user, scope: :user)
     visit root_path
     click_on 'Filiais'
 
@@ -16,7 +26,9 @@ feature 'Admin view subsidiaries' do
   scenario 'and view details' do
     Subsidiary.create!(name: 'Porto Ferreira', cnpj: '62.221.693/4752-03', address: 'Av das Americas, 212')
     Subsidiary.create!(name: 'São Paulo', cnpj: '28.919.059/5575-25', address: 'Av Paulista, 234')
+    user = User.create!(name: 'Felipe', email: 'flp.far@hotmail.com', password: '12345678')
 
+    login_as(user, scope: :user)
     visit root_path
     click_on 'Filiais'
     click_on 'Porto Ferreira'
@@ -28,6 +40,9 @@ feature 'Admin view subsidiaries' do
   end
 
   scenario 'and no subsidiaries are created' do
+    user = User.create!(name: 'Felipe', email: 'flp.far@hotmail.com', password: '12345678')
+
+    login_as(user, scope: :user)
     visit root_path
     click_on 'Filiais'
 
@@ -36,7 +51,9 @@ feature 'Admin view subsidiaries' do
 
   scenario 'and return to home page' do
     Subsidiary.create!(name: 'Porto Ferreira', cnpj: CNPJ.generate(true), address: 'Av das Americas, 212')
+    user = User.create!(name: 'Felipe', email: 'flp.far@hotmail.com', password: '12345678')
 
+    login_as(user, scope: :user)
     visit root_path
     click_on 'Filiais'
     click_on 'Voltar'
@@ -46,7 +63,9 @@ feature 'Admin view subsidiaries' do
 
   scenario 'and return to subsidiaries page' do
     Subsidiary.create!(name: 'Porto Ferreira', cnpj: CNPJ.generate(true), address: 'Av das Americas, 212')
+    user = User.create!(name: 'Felipe', email: 'flp.far@hotmail.com', password: '12345678')
 
+    login_as(user, scope: :user)
     visit root_path
     click_on 'Filiais'
     click_on 'Porto Ferreira'
