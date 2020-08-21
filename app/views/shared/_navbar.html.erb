@@ -1,0 +1,15 @@
+<ul>
+  <li><%= link_to 'Categorias', car_categories_path %></li>
+  <li><%= link_to 'Filiais', subsidiaries_path %></li>
+  <li><%= link_to 'Modelos de carro', car_models_path %></li>
+  <li><%= link_to 'Clientes', customers_path %></li>
+</ul>
+
+<ul>
+  <% if user_signed_in? %>
+    <li><%= current_user.name %></li>
+    <li><%= link_to  "Sair", destroy_user_session_path, method: :delete %></li>
+  <% else %>
+    <li><%= link_to 'Entrar', new_user_session_path %></li>
+  <% end %>
+</ul>
