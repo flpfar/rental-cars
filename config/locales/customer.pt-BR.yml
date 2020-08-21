@@ -1,0 +1,12 @@
+---
+  pt-BR:
+    activerecord:
+      models:
+        customer:
+          one: 'Cliente'
+          other: 'Clientes'
+      attributes:
+        customer:
+          name: 'Nome'
+          document: 'CPF'
+          email: 'Email'
