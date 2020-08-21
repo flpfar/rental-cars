@@ -14,7 +14,7 @@ feature 'User sign in' do
     click_on 'Entrar'
     fill_in 'Email', with: 'flp.far@hotmail.com'
     fill_in 'Senha', with: '12345678'
-    click_on 'Entrar'
+    click_button 'Entrar'
 
     expect(page).to have_content('Felipe')
     expect(page).to have_content('Login efetuado com sucesso')
@@ -28,7 +28,7 @@ feature 'User sign in' do
     visit new_user_session_path
     fill_in 'Email', with: 'flp.far@hotmail.com'
     fill_in 'Senha', with: '12345678'
-    click_on 'Entrar'
+    click_button 'Entrar'
     click_on 'Sair'
 
     expect(page).not_to have_content('Felipe')
