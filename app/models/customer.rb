@@ -6,6 +6,10 @@ class Customer < ApplicationRecord
             length: { is: 14 }
   validate :document_must_be_valid
 
+  def information
+    "#{name} - #{document}"
+  end
+
   private
 
   def document_must_be_valid
