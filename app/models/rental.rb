@@ -5,9 +5,16 @@ class Rental < ApplicationRecord
 
   validates :start_date, :end_date, presence: true
 
-  def value_preview
-    number_of_days_rented = end_date - start_date
+  before_create :generate_code
 
+  def estimated_value
+    number_of_days_rented = end_date - start_date
     number_of_days_rented * car_category.daily_price
+  end
+
+  private
+
+  def generate_code
+    self.code = SecureRandom.alphanumeric(8).upcase
   end
 end

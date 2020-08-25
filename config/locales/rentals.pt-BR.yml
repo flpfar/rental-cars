@@ -7,9 +7,10 @@
           other: 'Locações'
       attributes:
         rental:
+          code: 'Código'
           start_date: 'Data de início'
           end_date: 'Data de término'
-          value_preview: 'Previsão de valor'
+          estimated_value: 'Valor estimado'
           customer: 'Cliente'
           customer_id: 'Cliente'
           car_category: 'Categoria de carro'

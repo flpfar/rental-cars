@@ -1,6 +1,8 @@
 <h1>Locação <%= @rental.id %></h1>
 
 <dl>
+  <dt><%= Rental.human_attribute_name :code %></dt>
+  <dd><%= @rental.code %></dd>
   <dt><%= Rental.human_attribute_name :start_date %></dt>
   <dd><%= l @rental.start_date %></dd>
   <dt><%= Rental.human_attribute_name :end_date %></dt>
@@ -17,6 +19,8 @@
   <dd><%= @rental.car_category.name %></dd>
   <dt><%= Rental.human_attribute_name :user %></dt>
   <dd><%= @rental.user.name %></dd>
-  <dt><%= Rental.human_attribute_name :value_preview %></dt>
-  <dd><%= number_to_currency @rental.value_preview %></dd>
+  <dt><%= Rental.human_attribute_name :estimated_value %></dt>
+  <dd><%= number_to_currency @rental.estimated_value %></dd>
 </dl>
+
+<%= link_to  "Voltar", rentals_path %>
