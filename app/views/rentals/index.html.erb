@@ -3,7 +3,7 @@
 <% if @rentals.empty? %>
   <p><%= @is_search ? 'Nenhuma locação encontrada' : 'Nenhuma locação cadastrada'%></p>
 <% else %>
-  <%= form_with url: rentals_search_path, method: :get, local: true do |f| %>
+  <%= form_with url: search_rentals_path, method: :get, local: true do |f| %>
     <%= f.label :q, 'Busca de locação' %>
     <%= f.text_field :q %>
     <%= f.submit 'Buscar' %>

@@ -29,7 +29,7 @@ class RentalsController < ApplicationController
 
   def search
     @is_search = true
-    @rentals = Rental.where(code: params[:q])
+    @rentals = Rental.where('code LIKE UPPER(?)', "%#{params[:q]}%")
     render :index
   end
 
