@@ -1,0 +1,12 @@
+---
+  pt-BR:
+    activerecord:
+      models:
+        car_rental:
+          one: 'Retirada de carro'
+          other: 'Retiradas de carro'
+      attributes:
+        car_rental:
+          car_id: 'Carro'
+          car: 'Carro'
+          driver_license_number: 'CNH do condutor'

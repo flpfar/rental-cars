@@ -1,26 +1,16 @@
 <h1>Locação <%= @rental.id %></h1>
 
-<dl>
-  <dt><%= Rental.human_attribute_name :code %></dt>
-  <dd><%= @rental.code %></dd>
-  <dt><%= Rental.human_attribute_name :start_date %></dt>
-  <dd><%= l @rental.start_date %></dd>
-  <dt><%= Rental.human_attribute_name :end_date %></dt>
-  <dd><%= l @rental.end_date %></dd>
-  <dt><%= Rental.human_attribute_name :customer %></dt>
-  <dd><%= @rental.customer.information %></dd>
-  <dt><%= Rental.human_attribute_name :customer %></dt>
-  <dd>
-    <%= @rental.customer.name %>
-    <%= @rental.customer.document %>
-    <%= @rental.customer.email %>
-  </dd>
-  <dt><%= Rental.human_attribute_name :car_category %></dt>
-  <dd><%= @rental.car_category.name %></dd>
-  <dt><%= Rental.human_attribute_name :user %></dt>
-  <dd><%= @rental.user.name %></dd>
-  <dt><%= Rental.human_attribute_name :estimated_value %></dt>
-  <dd><%= number_to_currency @rental.estimated_value %></dd>
-</dl>
+<%= render @rental %>
+
+<% if @rental.car_rental %>
+  <h2>Locação em andamento</h2>
+  <span>Carro escolhido: </span><%= @rental.car_rental.car.information %><br/>
+  <span>CNH do condutor: </span><%= @rental.car_rental.driver_license_number %><br/>
+  <span>Iniciada por: </span><%= "#{@rental.car_rental.user.name} (#{@rental.car_rental.user.email})" %><br/>
+  <span>Em: </span><%= l @rental.car_rental.start_date, format: :short %>
+
+<% else %>
+  <%= link_to  "Iniciar locação", new_rental_car_rental_path(@rental) %>
+<% end %>
 
 <%= link_to  "Voltar", rentals_path %>
