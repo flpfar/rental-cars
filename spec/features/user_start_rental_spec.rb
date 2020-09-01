@@ -8,12 +8,13 @@ feature 'User start rental' do
     car_category_a = CarCategory.create!(name: 'A', car_insurance: 100, daily_rate: 100, third_party_insurance: 100)
     car_category_b = CarCategory.create!(name: 'B', car_insurance: 80, daily_rate: 80, third_party_insurance: 80)
     car_model_ka = CarModel.create!(name: 'Ka', year: 2019, manufacturer: 'Ford', motorization: '1.0',
-                                  car_category: car_category_a, fuel_type: 'Flex')
+                                    car_category: car_category_a, fuel_type: 'Flex')
     car_model_gol = CarModel.create!(name: 'Gol', year: 2019, manufacturer: 'VW', motorization: '1.0',
                                      car_category: car_category_a, fuel_type: 'Flex')
     car_model_uno = CarModel.create!(name: 'Uno', year: 2017, manufacturer: 'Fiat', motorization: '1.0',
-                                  car_category: car_category_b, fuel_type: 'Flex')
-    car_ka = Car.create!(license_plate: 'ABC1234', color: 'Vermelho', mileage: 123, car_model: car_model_ka)
+                                     car_category: car_category_b, fuel_type: 'Flex')
+    car_ka = Car.create!(license_plate: 'ABC1234', color: 'Vermelho', mileage: 123, 
+                         car_model: car_model_ka, status: :available)
     car_gol = Car.create!(license_plate: 'AVA2222', color: 'Preto', mileage: 123, car_model: car_model_gol)
     car_uno = Car.create!(license_plate: 'AAA9999', color: 'Azul', mileage: 123, car_model: car_model_uno)
     rental = Rental.create!(start_date: Date.current, end_date: 2.days.from_now,
@@ -45,7 +46,8 @@ feature 'User start rental' do
     car_category = CarCategory.create!(name: 'A', car_insurance: 100, daily_rate: 100, third_party_insurance: 100)
     car_model = CarModel.create!(name: 'Ka', year: 2019, manufacturer: 'Ford', motorization: '1.0',
                                  car_category: car_category, fuel_type: 'Flex')
-    car = Car.create!(license_plate: 'ABC1234', color: 'Vermelho', mileage: 123, car_model: car_model)
+    car = Car.create!(license_plate: 'ABC1234', color: 'Vermelho', mileage: 123,
+                      car_model: car_model, status: :available)
     rental = Rental.create!(start_date: Date.current, end_date: 2.days.from_now,
                             customer: customer, car_category: car_category, user: schedule_user)
     user = User.create!(name: 'Testing Username', email: 'user@ipsum.com', password: '12345678')
@@ -77,5 +79,40 @@ feature 'User start rental' do
     expect(page).to have_content(customer.name)
     expect(page).to have_content(customer.document)
     expect(page).to have_content(customer.email)
+    expect(car.reload).to be_rented
+  end
+
+  scenario 'view only available cars' do
+    schedule_user = User.create!(name: 'Lorem Ipsum', email: 'lorem@ipsum.com', password: '12345678')
+    customer = Customer.create!(name: 'Gabriel', document: '880.802.078-95', email: 'gabriel@mail.com')
+    car_category_a = CarCategory.create!(name: 'A', car_insurance: 100, daily_rate: 100, third_party_insurance: 100)
+    car_model_ka = CarModel.create!(name: 'Ka', year: 2019, manufacturer: 'Ford', motorization: '1.0',
+                                    car_category: car_category_a, fuel_type: 'Flex')
+    car_model_uno = CarModel.create!(name: 'Uno', year: 2017, manufacturer: 'Fiat', motorization: '1.0',
+                                     car_category: car_category_a, fuel_type: 'Flex')
+    car_ka = Car.create!(license_plate: 'ABC1234', color: 'Vermelho', mileage: 123,
+                         car_model: car_model_ka, status: :available)
+    rented_car_ka = Car.create!(license_plate: 'AVA2222', color: 'Preto', mileage: 123,
+                                car_model: car_model_ka, status: :rented)
+    car_uno = Car.create!(license_plate: 'AAA9999', color: 'Azul', mileage: 123,
+                          car_model: car_model_uno, status: :available)
+    rented_car_uno = Car.create!(license_plate: 'AAA5432', color: 'Verde', mileage: 123,
+                                 car_model: car_model_uno, status: :rented)
+    rental = Rental.create!(start_date: Date.current, end_date: 2.days.from_now,
+                            customer: customer, car_category: car_category_a, user: schedule_user)
+    user = User.create!(name: 'Testing Username', email: 'user@ipsum.com', password: '12345678')
+
+    login_as user, scope: :user
+    visit root_path
+    click_on 'Locações'
+    fill_in 'Busca de locação', with: rental.code
+    click_on 'Buscar'
+    click_on rental.code
+    click_on 'Iniciar locação'
+
+    expect(page).to have_content(car_ka.license_plate)
+    expect(page).to have_content(car_uno.license_plate)
+    expect(page).not_to have_content(rented_car_ka.license_plate)
+    expect(page).not_to have_content(rented_car_uno.license_plate)
   end
 end
