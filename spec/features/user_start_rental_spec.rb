@@ -39,7 +39,7 @@ feature 'User start rental' do
     expect(page).not_to have_content(car_uno.color)
   end
 
-  scenario 'successful' do
+  scenario 'successfully' do
     schedule_user = User.create!(name: 'Lorem Ipsum', email: 'lorem@ipsum.com', password: '12345678')
     customer = Customer.create!(name: 'Gabriel', document: '880.802.078-95', email: 'gabriel@mail.com')
     car_category = CarCategory.create!(name: 'A', car_insurance: 100, daily_rate: 100, third_party_insurance: 100)
